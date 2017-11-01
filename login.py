@@ -20,8 +20,8 @@ import download
 driver = webdriver.Chrome()
 import getid
 def login(id):
-    username='346925546@qq.com'
-    password='lzk941210'
+    username='your name'
+    password='your password'
     session = requests.Session()
     yt='https://www.youtube.com/watch?v=%s'%id
     res=session.get(yt)
