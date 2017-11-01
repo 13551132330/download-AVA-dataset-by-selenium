@@ -18,6 +18,7 @@ from selenium import webdriver
 import download
 #path='D:\phantomjs-2.1.1-windows\\bin\phantomjs.exe'
 driver = webdriver.Chrome()
+import getid
 def login(id):
     username='346925546@qq.com'
     password='lzk941210'

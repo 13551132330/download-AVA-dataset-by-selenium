@@ -6,11 +6,15 @@ import login
 from tqdm import tqdm
 from selenium import webdriver
 import urllib2
+import requests
+import getid
 # def main(key):
 #     data = {"0": "-5KQ66BBWC4", "1": "-FaXLcSFjUI", "2": "-IELREHX_js"}
 #     print 'prosess:%d'%key
 #     download.download(data.get(str(key)))
 if __name__ == "__main__":
+    print 'we are get id,please wait:'
+    getid.get_id()
     data=open('id_list.txt','r')
     #username='346925546@qq.com'
     #password='lzk941210'
@@ -29,21 +33,14 @@ if __name__ == "__main__":
     print 'we are working on,please wait!'
     # p = Pool(2)
     # p.map(login.login,list(id_data.values()))
-    '''
-    #IF YOU FIRST USE,PLEASE Cancel annotation
-    
-    
+
     login.login('-FaXLcSFjUI')
-    
-    
-    '''
+
     outstream=open('outstream.txt','a')
     outerro = open('outerro.txt', 'a')
     erro403=open('erro403.txt','a')
     havedownlist=open('havedownlist.txt','a')
 
-    '''
-    
     #IF YOU FIRST USE,PLEASE Cancel annotation
     #GET STREAMURL AND DELETE INVALIDED VIDEO,
     for i in tqdm(id_data.values()):
@@ -52,34 +49,23 @@ if __name__ == "__main__":
             stream=login.getstream(i)
         except AttributeError:
             invalided_data.append(i)
+            outerro.write(i + '\n')
             print 'invalided_erro '+i+ ':' + 'NoneType object has no attribute group'
         else:
             stream_list.append(stream)
             outstream.write(i+':'+stream+'\n')
+            try:
+                download.download(i, stream)
+            except:
+                erro403_list.append(i)
+                erro403.write(i + '\n')
+                print '430erro ' + i + ':' + 'HTTP Error 403: Forbidden'
+            else:
+                havedown_list.append(i)
+                havedownlist.write(i + '\n')
         #download.download(i,stream)
-    for i in invalided_data:
-        outerro.write(i+'\n')
-        
-    '''
 
-    f = open('outstream.txt', 'r')
-    for i in tqdm(f.readlines()):
-        sleep(0.01)
-        print '\n'
-        id = i.split(':')[0]
-        streamurl = i.split(':')[1]+':'+i.split(':')[2][:-1]
-        #print str(streamurl)
-        try:
-            download.download(id, streamurl)
-        except urllib2.HTTPError:
-            erro403_list.append(id)
-            erro403.write(id + '\n')
-            print '430erro ' + id + ':' + 'HTTP Error 403: Forbidden'
-        else:
-            havedown_list.append(id)
-            havedownlist.write(id+'\n')
     print 'all down'
-
 
     # pool = Pool(2)
 
