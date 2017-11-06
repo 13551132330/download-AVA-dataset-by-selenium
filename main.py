@@ -8,13 +8,14 @@ from selenium import webdriver
 import urllib2
 import requests
 import getid
+import test
 # def main(key):
 #     data = {"0": "-5KQ66BBWC4", "1": "-FaXLcSFjUI", "2": "-IELREHX_js"}
 #     print 'prosess:%d'%key
 #     download.download(data.get(str(key)))
 if __name__ == "__main__":
-    print 'we are get id,please wait:'
-    getid.get_id()
+    # print 'we are get id,please wait:'
+    # getid.get_id()
     data=open('id_list.txt','r')
     #username='346925546@qq.com'
     #password='lzk941210'
@@ -47,13 +48,14 @@ if __name__ == "__main__":
         sleep(0.01)
         try:
             stream=login.getstream(i)
-        except AttributeError:
+        except :
             invalided_data.append(i)
             outerro.write(i + '\n')
             print 'invalided_erro '+i+ ':' + 'NoneType object has no attribute group'
         else:
             stream_list.append(stream)
             outstream.write(i+':'+stream+'\n')
+
             try:
                 download.download(i, stream)
             except:
@@ -64,7 +66,8 @@ if __name__ == "__main__":
                 havedown_list.append(i)
                 havedownlist.write(i + '\n')
         #download.download(i,stream)
-
+    #stream = login.getstream('55Ihr6uVIDA')
+    test.add()
     print 'all down'
 
     # pool = Pool(2)

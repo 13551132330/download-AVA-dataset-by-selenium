@@ -1,4 +1,10 @@
 import download
 import login
-stream=login.getstream('HJ4Hcq3YX4k')
-download.download('HJ4Hcq3YX4k',stream)
+import urllib
+
+path = 'E:\lin\AVA\\train'
+id='QCLQYnt3aMo'
+filename='%s\%s.mp4'%(path,id)
+stream=login.getstream(id)
+#download.download('HJ4Hcq3YX4k',stream)
+urllib.urlretrieve(stream,filename)

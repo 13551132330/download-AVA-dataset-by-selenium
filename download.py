@@ -13,8 +13,14 @@ import shutil
 from pytube import request
 from time import sleep
 from tqdm import tqdm
+import urllib
+import usepytube
+issudown = open('issudown.txt', 'a')
+issu = open('issu.txt', 'a')
+path = 'E:\lin\AVA\\train'
+#path = 'E:\lin\AVA\\test'
 def delete(id):
-    file = 'E:\lin\AVA\source\%s.mp4'%id
+    file=os.path.join(path,'%s.mp4'%id)
     if os.path.exists(file):
         os.remove(file)
         print 'deleted:%s.mp4'%id
@@ -30,7 +36,7 @@ def findstream(id,soup):
     # print res.text
     # soup = BeautifulSoup(res.text, 'html.parser')
     # print(type(soup))
-    # f.write(soup.prettify().encode('utf-8'))
+    #f.write(soup.encode('utf-8'))
     # print 'we are getstream~~~~~~~~~~~\n'
     m=re.search('"url_encoded_fmt_stream_map":(".*?"),',soup)
     #f.write(m.group(1))
@@ -57,14 +63,27 @@ def download(id,streamURL):
     req2=requests.get(streamURL,stream=True)
     headers = request.get(streamURL, headers=True)
     #print headers['content-length']
-    if os.path.exists('E:\lin\AVA\source\%s.mp4'%id) and int(headers['content-length'])==int(os.path.getsize('E:\lin\AVA\source\%s.mp4' % id)):
+    if os.path.exists('%s\%s.mp4'%(path,id)) and int(headers['content-length'])==int(os.path.getsize('%s\%s.mp4'%(path,id))):
         print '%s exists,do next'%id
+    elif os.path.exists('%s\%s.mp4'%(path,id)):
+        print '正在处理未完全下载文件'
+        issudown.write(id + '\n')
+        try:
+            usepytube.usepytube(id)
+        except:
+            issu.write(id+'\n')
     else:
-        f=open('E:\lin\AVA\source\%s.mp4'%id,'wb')
+        #f=open('E:\lin\AVA\source\%s.mp4'%id,'wb')
+        filename='%s\%s.mp4'%(path,id)
         print 'downloading %s  %dMB,please do not close pycharm:'%(id,int(headers['content-length'])/(1024*1024))
-        for i in range(int(headers['content-length'])/(2*1024*1024)):
-            sleep(1)
-            i+=1
+        # for i in range(int(headers['content-length'])/(2*1024*1024)):
+        #     sleep(1)
+        #     i+=1
+        # try:
+        #     urllib.urlretrieve(streamURL,filename)
+        # except:
+        #     print'%s download by urllib failed'%id
+        f=open('%s\%s.mp4'%(path,id),'wb')
         shutil.copyfileobj(req2.raw,f)
         print '%s down!'%id
     # for i in yt.streams.filter(only_video=True,subtype='mp4').all():
